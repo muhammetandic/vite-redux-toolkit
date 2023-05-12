@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+
+#root {
+  font-family: "Open Sans", sans-serif;
+  position: fixed;
+  overflow: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+@layer components {
+  #root {
+    @apply bg-white dark:bg-slate-800 text-slate-200;
+  }
+}

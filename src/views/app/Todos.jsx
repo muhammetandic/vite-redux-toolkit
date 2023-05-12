@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { nanoid } from '@reduxjs/toolkit';
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { nanoid } from "@reduxjs/toolkit";
 import {
   useGetTodosQuery,
   useAddTodoMutation,
   useDeleteTodoMutation,
-} from './services/todos';
+} from "../../services/todos";
 
 const Todos = () => {
   const dispatch = useDispatch();
   const { data, error, isLoading } = useGetTodosQuery();
   const [deleteTodo, response] = useDeleteTodoMutation();
   const [addTodo, addResponse] = useAddTodoMutation();
-  const [task, setTask] = useState('');
+  const [task, setTask] = useState("");
 
   const handleAdd = (e) => {
     addTodo({
@@ -20,7 +20,7 @@ const Todos = () => {
       task: task,
       isCompleted: false,
     });
-    setTask('');
+    setTask("");
   };
 
   const handleDelete = (id) => () => {
@@ -41,14 +41,14 @@ const Todos = () => {
           <button onClick={handleAdd}>Ekle</button>
         </form>
       </div>
-      <div style={{ textAlign: 'left' }}>
+      <div style={{ textAlign: "left" }}>
         <ol>
           {data &&
             data.map((todo) => (
               <li key={todo.id}>
                 {todo.title}
                 <button
-                  style={{ cursor: 'pointer', marginLeft: '.5rem' }}
+                  style={{ cursor: "pointer", marginLeft: ".5rem" }}
                   onClick={handleDelete(todo.id)}
                 >
                   Delete
