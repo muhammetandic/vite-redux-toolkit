@@ -1,22 +1,30 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { nanoid } from "@reduxjs/toolkit";
+import { useEffect, useState } from "react";
 import {
   useGetTodosQuery,
+  useUpdateTodoMutation,
   useAddTodoMutation,
   useDeleteTodoMutation,
 } from "../../services/todos";
+import { Input } from "../../components/Base/Input";
+import { Button } from "../../components/Base/Button";
+import { useNavigate } from "react-router-dom";
 
 const Todos = () => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { data, error, isLoading } = useGetTodosQuery();
   const [deleteTodo, response] = useDeleteTodoMutation();
   const [addTodo, addResponse] = useAddTodoMutation();
   const [task, setTask] = useState("");
 
-  const handleAdd = (e) => {
+  useEffect(() => {
+    if (error?.status === 403) {
+      navigate("/login");
+    }
+  }, [error, navigate]);
+
+  const handleAdd = () => {
     addTodo({
-      id: nanoid(),
       task: task,
       isCompleted: false,
     });
@@ -26,6 +34,7 @@ const Todos = () => {
   const handleDelete = (id) => () => {
     deleteTodo(id);
   };
+
   return (
     <div>
       {error && <div>Error when data is loading...</div>}
@@ -33,26 +42,23 @@ const Todos = () => {
 
       <div>
         <form>
-          <input
+          <Input
             type="text"
             value={task}
             onChange={(e) => setTask(e.target.value)}
           />
-          <button onClick={handleAdd}>Ekle</button>
+          <Button onClick={handleAdd}>Ekle</Button>
         </form>
       </div>
-      <div style={{ textAlign: "left" }}>
+      <div className="mt-2">
         <ol>
           {data &&
             data.map((todo) => (
-              <li key={todo.id}>
-                {todo.title}
-                <button
-                  style={{ cursor: "pointer", marginLeft: ".5rem" }}
-                  onClick={handleDelete(todo.id)}
-                >
+              <li className="mb-2" key={todo.id}>
+                {todo.task}
+                <Button className="ml-4" onClick={handleDelete(todo.id)}>
                   Delete
-                </button>
+                </Button>
               </li>
             ))}
         </ol>

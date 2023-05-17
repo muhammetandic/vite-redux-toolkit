@@ -1,15 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
-import Todos from "./views/app/Todos.jsx";
 import { Login } from "./views/auth/Login.jsx";
 import { AppLayout } from "./layout/App.jsx";
 import { AuthLayout } from "./layout/Auth.jsx";
+import { Dashboard } from "./views/app/Dashboard.jsx";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <AppLayout>
-        <Todos />
+        <Dashboard />
       </AppLayout>
     ),
   },

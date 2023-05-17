@@ -6,6 +6,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Spinner } from "../../components/Base/Spinner";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const loginValidation = z.object({
   username: z.string().min(1, "Username required."),
@@ -23,10 +24,14 @@ export const Login = () => {
     resolver: zodResolver(loginValidation),
   });
 
-  if (response.status === "fulfilled") {
-    localStorage.setItem("accessToken", response.data.accessToken);
-    navigate("/");
-  }
+  useEffect(() => {
+    if (response.status === "fulfilled") {
+      localStorage.setItem("accessToken", response.data.accessToken);
+      localStorage.setItem("refreshToken", response.data.refreshToken);
+      navigate("/");
+    }
+  }, [response, navigate]);
+
   const handleLogin = (data) => {
     login(data);
   };
@@ -60,6 +65,13 @@ export const Login = () => {
           </div>
           <div className="text-center">
             <Button type="submit">Login</Button>
+          </div>
+          <div>
+            {response.error?.data?.error && (
+              <p className="mt-4 text-red-500 capitalize">
+                {response.error.data.error}
+              </p>
+            )}
           </div>
         </form>
       </div>
