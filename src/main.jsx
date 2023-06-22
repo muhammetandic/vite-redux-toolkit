@@ -12,11 +12,7 @@ Sentry.init({
   integrations: [
     new Sentry.BrowserTracing({
       // Set `tracePropagationTargets` to control for which URLs distributed tracing should be enabled
-      tracePropagationTargets: [
-        "localhost",
-        /^https:\/\/antpos.onrender\.com\/api/,
-        /^https:\/\/antapp.onrender\.com/,
-      ],
+      tracePropagationTargets: ["localhost", /^https:\/\/antapp.onrender\.com/],
     }),
     new Sentry.Replay(),
   ],
