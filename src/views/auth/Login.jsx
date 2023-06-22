@@ -33,6 +33,8 @@ export const Login = () => {
   }, [response, navigate]);
 
   const handleLogin = (data) => {
+    // eslint-disable-next-line no-undef
+    Deneme();
     login(data);
   };
 
