@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { enqueueSnackbar } from "notistack";
 import {
   useGetTodosQuery,
   useUpdateTodoMutation,
@@ -8,6 +9,7 @@ import {
 import { Input } from "../../components/Base/Input";
 import { Button } from "../../components/Base/Button";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "../../components/Base/Spinner";
 
 const Todos = () => {
   const navigate = useNavigate();
@@ -23,7 +25,23 @@ const Todos = () => {
     }
   }, [error, navigate]);
 
-  const handleAdd = () => {
+  useEffect(() => {
+    if (response.status === "rejected") {
+      enqueueSnackbar(response?.error?.data?.error, { variant: "error" });
+    }
+  }, [response]);
+
+  useEffect(() => {
+    if (addResponse.isSuccess) {
+      enqueueSnackbar("todo is added.", { variant: "success" });
+    }
+    if (addResponse.isError) {
+      enqueueSnackbar(addResponse?.error?.data?.error, { variant: "error" });
+    }
+  }, [addResponse]);
+
+  const handleAdd = (e) => {
+    e.preventDefault();
     addTodo({
       task: task,
       isCompleted: false,
@@ -38,7 +56,7 @@ const Todos = () => {
   return (
     <div>
       {error && <div>Error when data is loading...</div>}
-      {isLoading && <div>Loading...</div>}
+      {isLoading && <Spinner />}
 
       <div>
         <form>

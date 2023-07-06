@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
+import { SnackbarProvider } from "notistack";
 import { router } from "./routers";
 import "./assets/css/index.css";
 import * as Sentry from "@sentry/react";
@@ -26,7 +27,9 @@ Sentry.init({
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <SnackbarProvider>
+        <RouterProvider router={router} />
+      </SnackbarProvider>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

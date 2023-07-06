@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Spinner } from "../../components/Base/Spinner";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { enqueueSnackbar } from "notistack";
 
 const loginValidation = z.object({
   username: z.string().min(1, "Username required."),
@@ -25,22 +26,24 @@ export const Login = () => {
   });
 
   useEffect(() => {
-    if (response.status === "fulfilled") {
+    if (response.isSuccess) {
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("refreshToken", response.data.refreshToken);
       navigate("/");
     }
+    if (response.isError) {
+      enqueueSnackbar(response?.error?.data?.error, { variant: "error" });
+    }
   }, [response, navigate]);
 
-  const handleLogin = (data) => {
+  const handleLogin = (data, event) => {
+    event.preventDefault();
     login(data);
-    // eslint-disable-next-line no-undef
-    Deneme();
   };
 
   return (
     <>
-      {response.status === "pending" && <Spinner />}
+      {response.isLoading && <Spinner />}
       <div className="bg-gray-300 p-10 text-slate-800">
         <form onSubmit={handleSubmit(handleLogin)}>
           <div>
@@ -67,13 +70,6 @@ export const Login = () => {
           </div>
           <div className="text-center">
             <Button type="submit">Login</Button>
-          </div>
-          <div>
-            {response.error?.data?.error && (
-              <p className="mt-4 text-red-500 capitalize">
-                {response.error.data.error}
-              </p>
-            )}
           </div>
         </form>
       </div>

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addPost, getPosts } from './redux/postsSlice';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addPost, getPosts } from "./redux/postsSlice";
 
 const Post = ({ post }) => {
   return (
@@ -14,8 +14,8 @@ const Post = ({ post }) => {
 const Form = () => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    title: '',
-    body: '',
+    title: "",
+    body: "",
   });
 
   const handleChange = (key) => (e) => {
@@ -31,13 +31,13 @@ const Form = () => {
     <div>
       <form>
         <div className="form">
-          <label hmtlFor="title">Title:</label>
+          <label htmlFor="title">Title:</label>
           <input
             id="title"
             name="title"
             type="text"
             value={formData.title}
-            onChange={handleChange('title')}
+            onChange={handleChange("title")}
           />
         </div>
         <div className="form">
@@ -47,7 +47,7 @@ const Form = () => {
             name="body"
             type="text"
             value={formData.body}
-            onChange={handleChange('body')}
+            onChange={handleChange("body")}
           />
         </div>
         <div className="form">
@@ -64,9 +64,9 @@ const Posts = () => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts.posts);
   const status = useSelector((state) => state.posts.status);
-  console.log(posts);
+
   useEffect(() => {
-    if (status === 'idle') {
+    if (status === "idle") {
       dispatch(getPosts());
     }
   }, [status, dispatch]);
